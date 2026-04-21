@@ -16,8 +16,18 @@ async function verifyToken(req, res, next){
     req.user = decoded; 
     next();
   } catch (err) {
-    return res.status(401).json({ success: false, message: "Invalid token" });
-  }
+    if (err.name === "TokenExpiredError") {
+        return res.status(401).json({
+            success: false,
+            message: "Token expired"
+        });
+    }
+
+    return res.status(401).json({
+        success: false,
+        message: "Invalid token"
+    });
+    }
 };
 
 module.exports = { verifyToken };

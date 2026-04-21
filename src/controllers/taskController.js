@@ -58,7 +58,7 @@ async function getSpecific(req,res){
         
         const tasks = await taskService.getTasks(req.params.id,req.user);
 
-        if (!task) {
+        if (!tasks) {
         return res.status(404).json({
             success: false,
             message: "Task not found"

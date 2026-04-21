@@ -27,7 +27,7 @@ async function getTasks(id,user) {
         if (!rows[0]) {
             throw new Error("Task not found");
         }
-        return rows;
+        return rows[0];
     } else {
         const [rows] = await db.query(
         "SELECT * FROM tasks WHERE userId = ? AND id=?",
@@ -36,7 +36,7 @@ async function getTasks(id,user) {
         if (!rows[0]) {
             throw new Error("Task not found");
         }
-        return rows;
+        return rows[0];
     }
 }
 
