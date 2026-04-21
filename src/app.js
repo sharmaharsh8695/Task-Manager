@@ -14,10 +14,4 @@ app.get("/", (req, res) => {
   res.send("API Running");
 });
 
-// const db = require("./config/db");
-
-// db.query("SELECT 1")
-//   .then(() => console.log("DB Connected"))
-//   .catch(err => console.error("DB Error:", err));
-
 module.exports = app;
