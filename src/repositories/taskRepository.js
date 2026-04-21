@@ -41,29 +41,39 @@ async function getTasks(id,user) {
 }
 
 async function updateTask(id, title, description, user){
+
+    let result;
     if (user.role === "ADMIN") {
-        await db.query(
+        [result] = await db.query(
         "UPDATE tasks SET title=?, description=? WHERE id=?",
         [title, description, id]
         );
     } 
     else {
-        await db.query(
+        [result] = await db.query(
         "UPDATE tasks SET title=?, description=? WHERE id=? AND userId=?",
         [title, description, id, user.id]
         );
     }
+    if(result.affectedRows==0){
+        throw new Error("No record found");
+    }
+
 }
 
 async function deleteTask(id,user) {
+    let result
     if (user.role === "ADMIN") {
-        await db.query("DELETE FROM tasks WHERE id=?", [id]);
+        [result] = await db.query("DELETE FROM tasks WHERE id=?", [id]);
     } 
     else {
-        await db.query(
+        [result] = await db.query(
         "DELETE FROM tasks WHERE id=? AND userId=?",
         [id, user.id]
         );
+    }
+    if(result.affectedRows==0){
+        throw new Error("No record found");
     }
 }
 

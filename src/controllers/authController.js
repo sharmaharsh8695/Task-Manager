@@ -3,7 +3,30 @@ const { generateToken } = require("../utils/jwt");
 
 async function registerUser(req,res){
     try {
-        await register(req.body.email,req.body.password);
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).json({
+                success: false,
+                message: "Email and password are required"
+            });
+        }
+            
+        if (!email.includes("@")) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid email format"
+            });
+        }
+
+        if (password.length < 6) {
+            return res.status(400).json({
+                success: false,
+                message: "Password must be at least 6 characters"
+            });
+        }
+
+        await register(email,password);
         
         res.json({
             success : true,
@@ -19,7 +42,16 @@ async function registerUser(req,res){
 
 async function loginUser(req,res){
     try {
-        const user = await login(req.body.email,req.body.password);
+
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).json({
+                success: false,
+                message: "Email and password are required"
+            });
+        }
+        const user = await login(email,password);
         const token = generateToken(user);
 
         res.json({
